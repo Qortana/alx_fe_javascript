@@ -16,6 +16,7 @@ function saveQuotes() {
 
 // Example: Add a new quote
 function addQuote(newQuote) {
+    if (!newQuote) return;
     quotes.push(newQuote);
     saveQuotes(); // Save after adding
     displayQuotes();
@@ -23,8 +24,8 @@ function addQuote(newQuote) {
 
 // Display quotes in HTML
 function displayQuotes() {
-    const quotesList = document.getElementById('quotesList');
-    quotesList.innerHTML = '';
+    const list = document.getElementById('quotesList');
+    list.innerHTML = '';
     quotes.forEach((quote, index) => {
         const li = document.createElement('li');
         li.textContent = quote;
