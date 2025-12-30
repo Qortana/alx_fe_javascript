@@ -29,7 +29,7 @@ function displayQuotes() {
     quotes.forEach((quote, index) => {
         const li = document.createElement('li');
         li.textContent = quote;
-        quotesList.appendChild(li);
+        list.appendChild(li);
     });
 }
 
