@@ -38,5 +38,17 @@
     }
     </script>
 
+    <select id="categoryFilter" onchange="filterQuotes()">
+        <option value="all">All Categories</option>
+        <!-- Categories will be dynamically populated -->
+    </select>
+
+    <ul id="quotesList"></ul>
+
+    <input type="text" id="quoteInput" placeholder="Add a new quote">
+    <input type="text" id="categoryInput" placeholder="Category">
+    <button onclick="addQuote()">Add Quote</button>
+
+
   </body>
   </html>
