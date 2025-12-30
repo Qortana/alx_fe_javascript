@@ -1,43 +1,61 @@
-// Initialize quotes from Local Storage or use a default array
-let quotes = JSON.parse(localStorage.getItem('quotes')) || [
-  { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Motivation" }
-];
+// Initialize quotes array
+let quotes = [];
 
+// Load quotes from local storage on page load
+function loadQuotes() {
+    const storedQuotes = localStorage.getItem('quotes');
+    if (storedQuotes) {
+        quotes = JSON.parse(storedQuotes);
+    }
+}
+
+// Save quotes to local storage
 function saveQuotes() {
-  localStorage.setItem('quotes', JSON.stringify(quotes));
+    localStorage.setItem('quotes', JSON.stringify(quotes));
 }
 
-// Call saveQuotes() inside your 'Add Quote' function
-function addQuote() {
-  const newQuoteText = document.getElementById('newQuoteText').value;
-  const newQuoteCategory = document.getElementById('newQuoteCategory').value;
-
-  if (newQuoteText && newQuoteCategory) {
-    quotes.push({ text: newQuoteText, category: newQuoteCategory });
-    saveQuotes(); // Persistence
-    showRandomQuote();
-  }
+// Example: Add a new quote
+function addQuote(newQuote) {
+    quotes.push(newQuote);
+    saveQuotes(); // Save after adding
+    displayQuotes();
 }
 
-function showRandomQuote() {
-  const randomIndex = Math.floor(Math.random() * quotes.length);
-  const selectedQuote = quotes[randomIndex];
-  
-  // Display the quote...
-  
-  // Store the last viewed quote in Session Storage
-  sessionStorage.setItem('lastQuote', JSON.stringify(selectedQuote));
+// Display quotes in HTML
+function displayQuotes() {
+    const quotesList = document.getElementById('quotesList');
+    quotesList.innerHTML = '';
+    quotes.forEach((quote, index) => {
+        const li = document.createElement('li');
+        li.textContent = quote;
+        quotesList.appendChild(li);
+    });
 }
 
-function exportToJsonFile() {
-  const dataStr = JSON.stringify(quotes);
-  const dataBlob = new Blob([dataStr], { type: 'application/json' });
-  const url = URL.createObjectURL(dataBlob);
-  
-  const exportFileDefaultName = 'quotes.json';
+// Initialize app
+window.onload = () => {
+    loadQuotes();
+    displayQuotes();
+};
 
-  const linkElement = document.createElement('a');
-  linkElement.setAttribute('href', url);
-  linkElement.setAttribute('download', exportFileDefaultName);
-  linkElement.click();
+function setLastViewedQuote(quote) {
+    sessionStorage.setItem('lastQuote', quote);
 }
+
+function getLastViewedQuote() {
+    return sessionStorage.getItem('lastQuote');
+}
+
+function exportQuotes() {
+    const dataStr = JSON.stringify(quotes, null, 2);
+    const blob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'quotes.json';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+

@@ -8,7 +8,35 @@
   <body>
     <h1>Dynamic Quote Generator</h1>
     <div id="quoteDisplay"></div>
-    <button id="newQuote">Show New Quote</button>
+    <button onclick="exportQoutes()">Export Qoutes</button>
     <script src="script.js"></script>
+    <ul id="quotesList"></ul>
+    <input type="text" id="quoteInput" placeholder="Add a new quote" />
+    <button onclick="addQuote(document.getElementById('quoteInput').value)">Add Quote</button>
+
+    <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
+
+    <script>
+    function importFromJsonFile(event) {
+        const fileReader = new FileReader();
+        fileReader.onload = function(event) {
+            try {
+                const importedQuotes = JSON.parse(event.target.result);
+                if (Array.isArray(importedQuotes)) {
+                    quotes.push(...importedQuotes);
+                    saveQuotes();
+                    displayQuotes();
+                    alert('Quotes imported successfully!');
+                } else {
+                    alert('Invalid JSON format! Must be an array of quotes.');
+                }
+            } catch (error) {
+                alert('Error reading JSON file: ' + error.message);
+            }
+        };
+        fileReader.readAsText(event.target.files[0]);
+    }
+    </script>
+
   </body>
   </html>
