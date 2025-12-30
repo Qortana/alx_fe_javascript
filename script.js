@@ -1,6 +1,11 @@
 // Initialize quotes array
 let quotes = [];
 
+const  storedQuotes = localStorage.getItem('qoutes');
+if (storedQuotes) {
+    quotes = JSON.parse(storedQuotes);
+}
+
 // Load quotes from local storage on page load
 function loadQuotes() {
     const storedQuotes = localStorage.getItem('quotes');
